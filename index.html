@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>body{margin:0}[hidden]{display:none!important}img{max-width:100%}</style>
+<title>周末去哪玩</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=ZCOOL+QingKe+HuangYou&display=swap">
+<style>
+/* Layout: phone-first single column app — sticky filter panel, card feed, bottom tab bar */
+:root{
+  --bg:#f3f6f8; --surface:#ffffff; --ink:#14233a; --muted:#5d6b7e; --line:#dde4ea;
+  --sun:#ffc93c; --sun-ink:#3a2a00; --sea:#1f6f8b; --sea-soft:#e2f0f5; --rain:#5b6bbf;
+  --good:#2e8b57; --warn:#c77700;
+  --display:"ZCOOL QingKe HuangYou","Noto Sans SC",sans-serif;
+  --body:"Noto Sans SC",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1722; --surface:#172231; --ink:#e8eef5; --muted:#9aa8b8; --line:#283547;
+  --sun:#ffcf4d; --sun-ink:#2a1e00; --sea:#5fb3cf; --sea-soft:#1b3442; --rain:#8f9cf0;
+  --good:#5cc48a; --warn:#f0a43a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1722; --surface:#172231; --ink:#e8eef5; --muted:#9aa8b8; --line:#283547;
+  --sun:#ffcf4d; --sun-ink:#2a1e00; --sea:#5fb3cf; --sea-soft:#1b3442; --rain:#8f9cf0;
+  --good:#5cc48a; --warn:#f0a43a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55}
+.wrap{max-width:720px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 110px}
+header{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--display);font-weight:400;font-size:2.2rem;margin:0;line-height:1.1;letter-spacing:.02em}
+h1 span{background:var(--sun);color:var(--sun-ink);padding:0 .2em;border-radius:4px}
+.sub{color:var(--muted);margin:4px 0 0;font-size:.9rem}
+.city{font-size:.85rem;color:var(--muted)}
+h2{font-size:1.05rem;margin:0;text-wrap:balance}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin-top:16px;display:grid;gap:14px}
+.row{display:grid;gap:8px}
+.lbl{font-size:.78rem;color:var(--muted);letter-spacing:.06em}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;font-size:.88rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:480px){.two{grid-template-columns:1fr}}
+input[type=range]{width:100%;accent-color:var(--sea)}
+.val{font-variant-numeric:tabular-nums;font-weight:700}
+.weather{display:flex;gap:10px;align-items:center;background:var(--sea-soft);border-radius:10px;padding:10px 12px;font-size:.9rem}
+.weather b{color:var(--sea)}
+.feed{display:grid;gap:12px;margin-top:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:grid;gap:8px}
+.card.top{border-color:var(--sun);box-shadow:0 0 0 2px color-mix(in srgb,var(--sun) 40%,transparent)}
+.ct{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.ct h3{margin:0;font-size:1.02rem}
+.score{flex:none;font-variant-numeric:tabular-nums;font-weight:700;font-size:.85rem;background:var(--sun);color:var(--sun-ink);border-radius:8px;padding:2px 8px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.84rem;color:var(--muted)}
+.why{font-size:.86rem;color:var(--sea)}
+.tag{font-size:.75rem;border:1px solid var(--line);border-radius:6px;padding:1px 6px;color:var(--muted)}
+.tag.in{border-color:var(--rain);color:var(--rain)}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.btn{font:inherit;font-size:.86rem;border-radius:8px;padding:6px 12px;cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--ink)}
+.btn.pri{background:var(--sea);border-color:var(--sea);color:#fff}
+.btn:disabled{opacity:.5;cursor:default}
+.empty{text-align:center;color:var(--muted);padding:30px 10px}
+.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0px);padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px));z-index:5}
+.tabs button{flex:1;max-width:180px;background:none;border:0;font:inherit;font-size:.85rem;color:var(--muted);padding:12px 4px;cursor:pointer;border-top:3px solid transparent}
+.tabs button[aria-selected="true"]{color:var(--ink);font-weight:700;border-top-color:var(--sun)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.stat b{display:block;font-size:1.4rem;font-variant-numeric:tabular-nums}
+.stat span{font-size:.78rem;color:var(--muted)}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--good)}
+.guide p{margin:0;font-size:.9rem;color:var(--muted)}
+.route{font-size:.86rem;display:grid;gap:4px;padding-left:0;list-style:none;margin:0}
+.route li{display:flex;gap:8px}.route li b{color:var(--sea);font-variant-numeric:tabular-nums;flex:none;width:3.2em}
+textarea,input[type=text]{width:100%;font:inherit;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--bg);color:var(--ink)}
+.toast{position:fixed;left:50%;bottom:calc(76px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 16px;border-radius:999px;font-size:.88rem;z-index:9}
+@media (prefers-reduced-motion:no-preference){.card{transition:transform .15s}.card:hover{transform:translateY(-2px)}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <h1>周末<span>去哪玩</span></h1>
+      <p class="sub">展览、市集、演出、短途徒步，按你的口味、天气和预算排好了</p>
+    </div>
+    <div class="city">📍 深圳 · 本周末</div>
+  </header>
+
+  <!-- 推荐 -->
+  <section id="v-rec">
+    <div class="panel">
+      <div class="row">
+        <div class="lbl">我想玩</div>
+        <div class="chips" id="prefs"></div>
+      </div>
+      <div class="row">
+        <div class="lbl">周末天气（可切换模拟）</div>
+        <div class="chips" id="wx"></div>
+        <div class="weather" id="wxTip"></div>
+      </div>
+      <div class="two">
+        <div class="row">
+          <label class="lbl" for="budget">人均预算 <span class="val" id="bv"></span></label>
+          <input type="range" id="budget" min="0" max="300" step="10" value="120">
+        </div>
+        <div class="row">
+          <label class="lbl" for="ppl">同行人数 <span class="val" id="pv"></span></label>
+          <input type="range" id="ppl" min="1" max="10" step="1" value="3">
+        </div>
+      </div>
+    </div>
+    <div class="feed" id="feed"></div>
+  </section>
+
+  <!-- 组队 -->
+  <section id="v-team" hidden>
+    <div class="panel">
+      <h2>正在组队</h2>
+      <p class="sub" style="margin:0">一个人也能出发。加入别人的队伍，或者在推荐页对任意活动发起组队。</p>
+    </div>
+    <div class="feed" id="teams"></div>
+  </section>
+
+  <!-- 打卡 -->
+  <section id="v-log" hidden>
+    <div class="stats" id="stats"></div>
+    <div class="feed" id="logs"></div>
+  </section>
+
+  <!-- 攻略 -->
+  <section id="v-guide" hidden>
+    <div class="panel">
+      <h2>写一篇攻略</h2>
+      <input type="text" id="gTitle" placeholder="标题，例如：华侨城半日文艺线">
+      <textarea id="gBody" rows="3" placeholder="路线、花费、避坑提醒…"></textarea>
+      <div class="acts"><button class="btn pri" id="gPost">发布攻略</button></div>
+    </div>
+    <div class="feed" id="guides"></div>
+  </section>
+</div>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" data-v="rec" aria-selected="true">推荐</button>
+  <button role="tab" data-v="team" aria-selected="false">组队</button>
+  <button role="tab" data-v="log" aria-selected="false">打卡</button>
+  <button role="tab" data-v="guide" aria-selected="false">攻略</button>
+</nav>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const ACTS=[
+ {id:1,name:"OCT 当代艺术中心 · 影像双年展",type:"展览",indoor:true,price:0,min:1,max:6,area:"南山 华侨城",time:"周六日 10:00–18:00",tags:["免费","拍照出片"]},
+ {id:2,name:"海上世界周末创意市集",type:"市集",indoor:false,price:40,min:1,max:8,area:"南山 蛇口",time:"周六 15:00–21:00",tags:["小吃","手作"]},
+ {id:3,name:"梧桐山 泰山涧短线徒步",type:"徒步",indoor:false,price:20,min:2,max:10,area:"罗湖 梧桐山",time:"建议 8:00 出发，约 4 小时",tags:["瀑布","中等强度"]},
+ {id:4,name:"B10 现场 · 独立乐队专场",type:"演出",indoor:true,price:150,min:1,max:4,area:"南山 华侨城",time:"周六 20:00",tags:["Livehouse","需购票"]},
+ {id:5,name:"深圳湾公园 日落骑行",type:"徒步",indoor:false,price:30,min:1,max:10,area:"南山 深圳湾",time:"周日 16:30–19:00",tags:["共享单车","日落"]},
+ {id:6,name:"深圳博物馆 古代艺术特展",type:"展览",indoor:true,price:0,min:1,max:10,area:"福田 市民中心",time:"周六日 10:00–18:00",tags:["免费","需预约"]},
+ {id:7,name:"大浪时尚小镇 二手古着市集",type:"市集",indoor:true,price:60,min:1,max:6,area:"龙华 大浪",time:"周日 11:00–18:00",tags:["室内","淘货"]},
+ {id:8,name:"音乐厅 周末室内乐",type:"演出",indoor:true,price:80,min:1,max:4,area:"福田 音乐厅",time:"周日 15:00",tags:["学生票"]},
+ {id:9,name:"大小梅沙 海滨栈道",type:"徒步",indoor:false,price:15,min:1,max:10,area:"盐田",time:"全天，约 2.5 小时",tags:["看海","轻松"]},
+ {id:10,name:"剧本杀 · 民国悬疑六人本",type:"演出",indoor:true,price:120,min:5,max:7,area:"福田 车公庙",time:"周六 14:00 / 19:00",tags:["需满员","沉浸式"]},
+ {id:11,name:"华侨城创意园 设计周开放日",type:"展览",indoor:false,price:0,min:1,max:8,area:"南山 华侨城",time:"周六日 全天",tags:["免费","户外装置"]},
+ {id:12,name:"桌游吧 下午场畅玩",type:"市集",indoor:true,price:50,min:3,max:8,area:"南山 科技园",time:"周六日 13:00–19:00",tags:["雨天备选","适合多人"]},
+];
+const TYPES=["展览","市集","演出","徒步"];
+const WX={sun:{t:"晴 27°C",tip:"<b>晴天</b> 户外活动加分，记得防晒"},cloud:{t:"多云 24°C",tip:"<b>多云</b> 室内外都合适，徒步体感最好"},rain:{t:"阵雨 22°C",tip:"<b>有雨</b> 户外活动降权，优先推荐室内"}};
+const S={prefs:new Set(["展览","市集"]),wx:"sun",budget:120,ppl:3};
+
+const store={get(k,d){try{const v=localStorage.getItem("wk_"+k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem("wk_"+k,JSON.stringify(v))}catch(e){}}};
+let teams=store.get("teams",[
+ {id:"t1",act:3,host:"阿杰",need:6,joined:4,date:"周六 8:00 梧桐山站"},
+ {id:"t2",act:10,host:"小鹿",need:6,joined:5,date:"周六 19:00"},
+ {id:"t3",act:2,host:"Mia",need:4,joined:2,date:"周六 16:00 海上世界地铁站"},
+]);
+let mine=store.get("mine",[]);
+let logs=store.get("logs",[{act:6,date:"10月19日",rate:5,cost:0,sample:true},{act:9,date:"10月26日",rate:4,cost:25,sample:true}]);
+let guides=store.get("guides",[
+ {title:"华侨城半日文艺线（人均 0–50 元）",by:"小满",body:"上午看 OCT 影像展，中午创意园吃饭，下午逛设计周户外装置，雨天也能玩大半。",route:[["10:00","OCT 当代艺术中心"],["12:30","创意园午餐"],["14:00","设计周开放日"]],likes:128},
+ {title:"梧桐山泰山涧新手攻略",by:"阿杰",body:"走泰山涧路线，水多路滑穿防滑鞋，带够 1.5L 水。雨后两天别去。",route:[["08:00","梧桐山站集合"],["09:00","泰山涧入口"],["12:00","好汉坡下撤"]],likes:86},
+]);
+const save=()=>{store.set("teams",teams);store.set("mine",mine);store.set("logs",logs);store.set("guides",guides)};
+const A=id=>ACTS.find(a=>a.id===id);
+const $=s=>document.querySelector(s);
+
+function toast(m){const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>t.hidden=true,1800)}
+
+function score(a){
+  let s=50,why=[];
+  if(S.prefs.has(a.type)){s+=25;why.push("符合你的偏好")}
+  if(S.wx==="rain"){if(a.indoor){s+=15;why.push("室内不怕雨")}else s-=30}
+  else if(S.wx==="sun"&&!a.indoor){s+=10;why.push("晴天适合户外")}
+  else if(S.wx==="cloud"&&a.type==="徒步"){s+=10;why.push("多云徒步体感好")}
+  if(a.price<=S.budget){s+=10;if(a.price===0)why.push("免费");else if(a.price<=S.budget*.5)why.push("预算很宽裕")}else s-=40;
+  if(S.ppl>=a.min&&S.ppl<=a.max){s+=5;if(a.min>=3)why.push(S.ppl+" 人刚好成局")}else s-=25;
+  return {s:Math.max(0,Math.min(99,s)),why,fit:a.price<=S.budget&&S.ppl>=a.min&&S.ppl<=a.max&&!(S.wx==="rain"&&!a.indoor)};
+}
+function renderFilters(){
+  $("#prefs").innerHTML=TYPES.map(t=>`<button class="chip" aria-pressed="${S.prefs.has(t)}" data-p="${t}">${t}</button>`).join("");
+  $("#wx").innerHTML=Object.entries(WX).map(([k,v])=>`<button class="chip" aria-pressed="${S.wx===k}" data-w="${k}">${v.t}</button>`).join("");
+  $("#wxTip").innerHTML=WX[S.wx].tip;
+  $("#bv").textContent=S.budget?"¥"+S.budget:"只看免费";$("#pv").textContent=S.ppl+" 人";
+}
+function renderFeed(){
+  const list=ACTS.map(a=>({a,...score(a)})).sort((x,y)=>y.s-x.s);
+  const ok=list.filter(x=>x.fit),rest=list.filter(x=>!x.fit);
+  let h=ok.length?ok.map((x,i)=>card(x,i===0)).join(""):`<div class="empty">当前条件下没有完全合适的活动，试试放宽预算或人数</div>`;
+  if(rest.length)h+=`<p class="lbl" style="margin:8px 0 0">不太合适（${rest.length}）</p>`+rest.slice(0,3).map(x=>card(x,false,true)).join("");
+  $("#feed").innerHTML=h;
+}
+function card({a,s,why},top,dim){
+  const reason=[];if(a.price>S.budget)reason.push("超出预算");if(S.ppl<a.min||S.ppl>a.max)reason.push(`适合 ${a.min}–${a.max} 人`);if(S.wx==="rain"&&!a.indoor)reason.push("户外遇雨");
+  return `<article class="card${top?" top":""}" style="${dim?"opacity:.6":""}">
+   <div class="ct"><h3>${top?"⭐ 首选 · ":""}${a.name}</h3><span class="score">${s}</span></div>
+   <div class="meta"><span>${a.type}</span><span>${a.area}</span><span>${a.time}</span><span class="val">${a.price?"¥"+a.price+"/人":"免费"}</span></div>
+   <div class="acts" style="gap:6px"><span class="tag ${a.indoor?"in":""}">${a.indoor?"室内":"户外"}</span>${a.tags.map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+   <div class="why">${dim?"⚠ "+reason.join(" · "):"推荐理由：" + (why.join(" · ")||"综合匹配")}</div>
+   ${dim?"":`<div class="acts"><button class="btn pri" data-team="${a.id}">发起组队</button><button class="btn" data-log="${a.id}">打卡</button></div>`}
+  </article>`;
+}
+function renderTeams(){
+  $("#teams").innerHTML=teams.map(t=>{const a=A(t.act),full=t.joined>=t.need,joined=mine.includes(t.id);
+   return `<article class="card"><div class="ct"><h3>${a.name}</h3><span class="tag">${a.type}</span></div>
+    <div class="meta"><span>队长 ${t.host}</span><span>${t.date}</span><span class="val">${a.price?"¥"+a.price+"/人":"免费"}</span></div>
+    <div class="bar"><i style="width:${Math.min(100,t.joined/t.need*100)}%"></i></div>
+    <div class="meta"><span class="val">${t.joined}/${t.need} 人</span><span>${full?"已满员":"还差 "+(t.need-t.joined)+" 人"}</span></div>
+    <div class="acts"><button class="btn ${joined?"":"pri"}" data-join="${t.id}" ${full&&!joined?"disabled":""}>${joined?"退出队伍":full?"已满员":"加入"}</button></div></article>`}).join("");
+}
+function renderLogs(){
+  const cost=logs.reduce((s,l)=>s+l.cost,0),types=new Set(logs.map(l=>A(l.act).type)).size;
+  $("#stats").innerHTML=`<div class="stat"><b>${logs.length}</b><span>打卡次数</span></div><div class="stat"><b>¥${cost}</b><span>累计花费</span></div><div class="stat"><b>${types}/4</b><span>解锁玩法</span></div>`;
+  $("#logs").innerHTML=logs.length?logs.slice().reverse().map(l=>{const a=A(l.act);return `<article class="card"><div class="ct"><h3>${a.name}</h3><span class="tag">${l.date}</span></div>
+   <div class="meta"><span>${"★".repeat(l.rate)}${"☆".repeat(5-l.rate)}</span><span>${a.area}</span><span class="val">${l.cost?"花费 ¥"+l.cost:"免费"}</span>${l.sample?"<span>示例记录</span>":""}</div></article>`}).join(""):`<div class="empty">还没有打卡，去推荐页选一个周末计划吧</div>`;
+}
+function renderGuides(){
+  $("#guides").innerHTML=guides.map((g,i)=>`<article class="card guide"><div class="ct"><h3>${esc(g.title)}</h3><span class="tag">♥ ${g.likes}</span></div>
+   <p>by ${esc(g.by)} · ${esc(g.body)}</p>${g.route?`<ul class="route">${g.route.map(r=>`<li><b>${r[0]}</b>${r[1]}</li>`).join("")}</ul>`:""}
+   <div class="acts"><button class="btn" data-like="${i}">点赞</button><button class="btn" data-share="${i}">复制分享文案</button></div></article>`).join("");
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function renderAll(){renderFilters();renderFeed();renderTeams();renderLogs();renderGuides()}
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;const d=b.dataset;
+  if(d.p){S.prefs.has(d.p)?S.prefs.delete(d.p):S.prefs.add(d.p);renderFilters();renderFeed()}
+  else if(d.w){S.wx=d.w;renderFilters();renderFeed()}
+  else if(d.v){document.querySelectorAll(".tabs button").forEach(x=>x.setAttribute("aria-selected",x===b));["rec","team","log","guide"].forEach(v=>$("#v-"+v).hidden=v!==d.v);window.scrollTo(0,0)}
+  else if(d.team){const id="t"+Date.now();teams.unshift({id,act:+d.team,host:"我",need:Math.max(S.ppl,A(+d.team).min),joined:1,date:"本周六 待定"});mine.push(id);save();renderTeams();toast("已发起组队，去「组队」看看");}
+  else if(d.join){const t=teams.find(x=>x.id===d.join);if(mine.includes(t.id)){mine=mine.filter(x=>x!==t.id);t.joined--;toast("已退出队伍")}else{mine.push(t.id);t.joined++;toast("已加入，队长会在群里通知集合")}save();renderTeams()}
+  else if(d.log){const a=A(+d.log),n=new Date();logs.push({act:a.id,date:(n.getMonth()+1)+"月"+n.getDate()+"日",rate:5,cost:a.price});save();renderLogs();toast("打卡成功 +1")}
+  else if(d.like){guides[+d.like].likes++;save();renderGuides()}
+  else if(d.share){const g=guides[+d.share],txt=`【周末去哪玩】${g.title}\n${g.body}\n${(g.route||[]).map(r=>r[0]+" "+r[1]).join("\n")}`;
+    navigator.clipboard?.writeText(txt).then(()=>toast("分享文案已复制"),()=>toast("复制失败，请长按文字手动复制"))}
+  else if(b.id==="gPost"){const t=$("#gTitle").value.trim(),bd=$("#gBody").value.trim();if(!t||!bd){toast("请填写标题和内容");return}guides.unshift({title:t,by:"我",body:bd,likes:0});$("#gTitle").value="";$("#gBody").value="";save();renderGuides();toast("攻略已发布")}
+});
+$("#budget").addEventListener("input",e=>{S.budget=+e.target.value;renderFilters();renderFeed()});
+$("#ppl").addEventListener("input",e=>{S.ppl=+e.target.value;renderFilters();renderFeed()});
+renderAll();
+</script>
+
+</html>
